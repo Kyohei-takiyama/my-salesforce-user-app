@@ -1,6 +1,7 @@
 version: 1
 applications:
   - appRoot: my-salesforce-user-app/frontend
+  - buildPath: my-salesforce-user-app/frontend/.next
     frontend:
       phases:
         preBuild:

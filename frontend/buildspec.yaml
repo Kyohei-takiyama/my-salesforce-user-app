@@ -5,10 +5,10 @@ frontend:
       commands:
         # https://docs.aws.amazon.com/ja_jp/amplify/latest/userguide/edit-build-settings.html#navigating-to-a-subfolder
         - cd frontend
-        - npm install
+        - yarn install
     build:
       commands:
-        - npm run build
+        - yarn run build
   artifacts:
     baseDirectory: "frontend/.next"
     files:

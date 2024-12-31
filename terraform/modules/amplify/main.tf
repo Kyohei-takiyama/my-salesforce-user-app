@@ -5,7 +5,7 @@ resource "aws_amplify_app" "nextjs_app" {
   name         = var.amplify_app_name
   repository   = var.repository_url # 例: "https://github.com/your-org/your-repo"
   access_token = var.github_token   # GitHubのPersonal Access Token等 (GitLab等ならoauth_tokenなど別指定)
-  platform     = "WEB"
+  platform     = "WEB_COMPUTE"
   build_spec   = file("${path.module}/../../../frontend/buildspec.yaml")
 
   enable_auto_branch_creation = true
@@ -18,6 +18,7 @@ resource "aws_amplify_app" "nextjs_app" {
   auto_branch_creation_config {
     # Enable auto build for the created branch.
     enable_auto_build = true
+    framework         = "Next.js - SSR"
   }
 
   # Basic Auth (カンタンなパスワード保護) やカスタムドメイン設定したい場合は追記可能

@@ -39,6 +39,7 @@ resource "aws_amplify_branch" "main_branch" {
   environment_variables = {
     AMPLIFY_MONOREPO_APP_ROOT = "frontend"
     AMPLIFY_DIFF_DEPLOY       = "false"
+    _CUSTOM_IMAGE             = "amplify:al2023"
   }
 }
 

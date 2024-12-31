@@ -18,7 +18,7 @@ resource "aws_amplify_app" "nextjs_app" {
   auto_branch_creation_config {
     # Enable auto build for the created branch.
     enable_auto_build = true
-    framework         = "Next.js"
+    framework         = "Next.js - SSR"
   }
 
   # Basic Auth (カンタンなパスワード保護) やカスタムドメイン設定したい場合は追記可能
@@ -38,6 +38,7 @@ resource "aws_amplify_branch" "main_branch" {
   # 特定ブランチ向けの環境変数を追加で設定したい場合
   environment_variables = {
     AMPLIFY_MONOREPO_APP_ROOT = "frontend"
+    AMPLIFY_DIFF_DEPLOY       = "false"
   }
 }
 

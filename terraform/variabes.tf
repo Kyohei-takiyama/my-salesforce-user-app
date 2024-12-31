@@ -8,3 +8,9 @@ variable "env_prefix" {
 variable "service_name" {
   default = "create-sf-app"
 }
+
+variable "github_token" {
+}
+
+variable "repository_url" {
+}

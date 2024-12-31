@@ -42,16 +42,6 @@ resource "aws_amplify_branch" "main_branch" {
   app_id      = aws_amplify_app.nextjs_app.id
   branch_name = var.branch_name
   description = "Next.js main branch"
-
-  # デフォルトは build_spec は App のを継承するが、独自指定も可能
-  # build_spec = file("${path.module}/../buildspec.yml")
-
-  # 特定ブランチ向けの環境変数を追加で設定したい場合
-  environment_variables = {
-    AMPLIFY_MONOREPO_APP_ROOT = "frontend"
-    AMPLIFY_DIFF_DEPLOY       = "false"
-    _CUSTOM_IMAGE             = "amplify:al2023"
-  }
 }
 
 #################################################

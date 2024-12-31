@@ -37,7 +37,7 @@ resource "aws_amplify_branch" "main_branch" {
 
   # 特定ブランチ向けの環境変数を追加で設定したい場合
   environment_variables = {
-    ENV_NAME = "dev"
+    AMPLIFY_MONOREPO_APP_ROOT = "frontend"
   }
 }
 

@@ -1,0 +1,66 @@
+name: Deploy backend to Lambda
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "backend/**"
+
+env:
+  AWS_REGION: us-west-2
+  ECR_REPOSITORY: dev-create-sf-app-ecr
+  FUNCTION_NAME: dev-create-sf-app-lambda
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: set aws role to assume
+        run: echo "AWS_ROLE_ARN=${{ secrets.AWS_ROLE_TO_ASSUME }}" >> $GITHUB_ENV
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: linux/arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push image
+        uses: docker/build-push-action@v5
+        id: build-image
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+          platforms: linux/arm64
+
+      - name: Deploy to Lambda
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          aws lambda update-function-code --function-name ${{ env.FUNCTION_NAME }} --image-uri $ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          aws lambda wait function-updated --function-name ${{ env.FUNCTION_NAME }}

@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.146",
     "prettier": "^3.4.2",
     "typescript": "^5.7.2"
   },

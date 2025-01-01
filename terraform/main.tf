@@ -22,3 +22,19 @@ module "amplify" {
   github_token     = var.github_token
   branch_name      = "main"
 }
+
+module "oicd-iam-role" {
+  source               = "./modules/iam-role"
+  region               = var.region
+  env_prefix           = var.env_prefix
+  service_name         = var.service_name
+  account_id           = data.aws_caller_identity.current.account_id
+  lambda_function_name = module.lambda.lambda_function_name
+  ecr_repository_name  = module.lambda.ecr_repository_name
+  github_owner         = var.github_owner
+  github_repo          = var.github_repo
+  github_oidc_endpoint = var.github_oidc_endpoint
+}
+
+# account id を取得
+data "aws_caller_identity" "current" {}

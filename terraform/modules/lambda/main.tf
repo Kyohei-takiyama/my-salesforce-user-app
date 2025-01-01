@@ -40,3 +40,10 @@ resource "aws_lambda_function" "lambda" {
   filename         = data.archive_file.lambda_data.output_path
   source_code_hash = data.archive_file.lambda_data.output_base64sha256
 }
+
+################################
+# ECR
+################################
+resource "aws_ecr_repository" "ecr" {
+  name = "${var.env_prefix}-${var.service_name}-ecr"
+}

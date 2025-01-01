@@ -2,17 +2,18 @@ variable "region" {
 }
 
 variable "env_prefix" {
-  default = "dev"
 }
 
 variable "service_name" {
-  default = "create-sf-app"
 }
 
-variable "github_token" {
+variable "account_id" {
 }
 
-variable "repository_url" {
+variable "lambda_function_name" {
+}
+
+variable "ecr_repository_name" {
 }
 
 variable "github_owner" {

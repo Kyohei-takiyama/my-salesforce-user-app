@@ -35,9 +35,6 @@ resource "aws_lambda_function" "lambda" {
   package_type  = "Image"
   image_uri     = data.aws_ecr_image.image.image_uri
   role          = aws_iam_role.lambda_role.arn
-  image_config {
-    entry_point = ["/src/index.handler"]
-  }
 }
 
 ################################

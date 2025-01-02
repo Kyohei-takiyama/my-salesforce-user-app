@@ -14,10 +14,9 @@ COPY . .
 RUN npm run build
 
 # 実行環境
-FROM node:16
+FROM public.ecr.aws/lambda/nodejs:16
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/dist ./dist
-EXPOSE 8080
-CMD [ "npm", "start" ]
+COPY --from=builder /app/dist/index.js ./index.js
+CMD ["index.handler"]

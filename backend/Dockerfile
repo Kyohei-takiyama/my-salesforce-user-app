@@ -18,5 +18,5 @@ FROM public.ecr.aws/lambda/nodejs:16
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/dist/index.js ./index.js
+COPY --from=builder /app/dist/index.js ${LAMBDA_TASK_ROOT}
 CMD ["index.handler"]

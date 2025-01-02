@@ -1,6 +1,8 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
 import { handler as func } from "./services/salesforce/salesforceApiClient";
 
+console.log("Lambda initialized");
+
 export const handler = async (event: APIGatewayEvent, context: Context) => {
   try {
     // ここで別の処理やルーティングを行うことも

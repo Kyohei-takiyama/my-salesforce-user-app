@@ -23,22 +23,21 @@ data "aws_iam_policy_document" "lambda_assume_role" {
   }
 }
 
-# ローカルにあるlambdaのソースコード
-data "archive_file" "lambda_data" {
-  type        = "zip"
-  source_file = "${path.module}/src/dist/index.js"
-  output_path = "${path.module}/src/index.zip"
+data "aws_ecr_image" "image" {
+  repository_name = aws_ecr_repository.ecr.name
+  most_recent     = true
 }
 
 # AWSへ作るlambda function
 resource "aws_lambda_function" "lambda" {
-  depends_on       = [aws_iam_role.lambda_role]
-  function_name    = "${var.env_prefix}-${var.service_name}-lambda"
-  handler          = "index.handler"
-  runtime          = "nodejs16.x"
-  role             = aws_iam_role.lambda_role.arn
-  filename         = data.archive_file.lambda_data.output_path
-  source_code_hash = data.archive_file.lambda_data.output_base64sha256
+  depends_on    = [aws_iam_role.lambda_role, aws_ecr_repository.ecr, data.aws_ecr_image.image]
+  function_name = "${var.env_prefix}-${var.service_name}-lambda"
+  package_type  = "Image"
+  image_uri     = data.aws_ecr_image.image.image_uri
+  role          = aws_iam_role.lambda_role.arn
+  image_config {
+    entry_point = ["/src/index.handler"]
+  }
 }
 
 ################################

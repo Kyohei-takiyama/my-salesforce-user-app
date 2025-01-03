@@ -14,9 +14,9 @@ COPY . .
 RUN npm run build
 
 FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:22
-WORKDIR /app
+WORKDIR ${LAMBDA_TASK_ROOT}
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/dist/ ${LAMBDA_TASK_ROOT}
+COPY --from=builder /app/dist/* ./
 RUN ls -la
 CMD ["index.handler"]

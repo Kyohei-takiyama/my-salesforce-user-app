@@ -20,15 +20,11 @@ async function importHandler(
     const body = event.body ? JSON.parse(event.body) : {};
     let csvBase64 = body.csvBase64;
     if (!csvBase64) {
-      // return {
-      //   statusCode: 400,
-      //   headers: defaultHeaders,
-      //   body: JSON.stringify({ error: "csvBase64 is required" }),
-      // };
-      const csvData = `Name,Email
-Taro,taro@example.com
-Hanako,hanako@example.com`;
-      csvBase64 = Buffer.from(csvData).toString("base64");
+      return {
+        statusCode: 400,
+        headers: defaultHeaders,
+        body: JSON.stringify({ error: "csvBase64 is required" }),
+      };
     }
 
     // 2. CSV パース

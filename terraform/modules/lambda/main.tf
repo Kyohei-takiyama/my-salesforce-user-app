@@ -32,6 +32,16 @@ data "aws_iam_policy_document" "lambda_policy" {
     ]
     resources = ["*"]
   }
+
+  # s3にアクセスするためのポリシー
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject",
+    ]
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_policy" "lambda_policy" {

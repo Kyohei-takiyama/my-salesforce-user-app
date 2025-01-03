@@ -45,3 +45,9 @@ module "seacret-manager" {
   env_prefix   = var.env_prefix
   my_secrets   = var.my_secrets
 }
+
+module "s3" {
+  source       = "./modules/s3"
+  env_prefix   = var.env_prefix
+  service_name = var.service_name
+}

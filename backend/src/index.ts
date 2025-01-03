@@ -2,6 +2,7 @@
 import { APIGatewayEvent, APIGatewayProxyResult, Context } from "aws-lambda";
 import { parseCsv } from "./services/csvService";
 import { createSalesforceUsers } from "./services/salesforceService";
+import { uploadCsvToS3 } from "./services/aws/s3Service";
 
 /**
  * CSVをインポートしてパース結果を返す
@@ -33,6 +34,7 @@ Hanako,hanako@example.com`;
     // 2. CSV パース
     const csvBuffer = Buffer.from(csvBase64, "base64");
     const records = await parseCsv(csvBuffer);
+    const s3Url = await uploadCsvToS3(csvBuffer);
 
     // 3. パースした結果（行ごとのオブジェクト配列）を返す
     return {
@@ -41,6 +43,7 @@ Hanako,hanako@example.com`;
       body: JSON.stringify({
         message: "Import success",
         records, // フロントに返してテーブル表示などに使う
+        s3Url, // S3にアップロードした場所
       }),
     };
   } catch (error) {
@@ -88,7 +91,7 @@ async function createHandler(
       headers: defaultHeaders,
       body: JSON.stringify({
         message: "Salesforce creation success",
-        // result,
+        result,
       }),
     };
   } catch (error) {

@@ -42,7 +42,7 @@ resource "aws_api_gateway_rest_api" "api" {
     }
     paths = {
       "/import" = {
-        get = {
+        post = {
           x-amazon-apigateway-integration = {
             httpMethod           = "POST" # LambdaへのアクセスはPOSTでないといけないらしい
             payloadFormatVersion = "1.0"
@@ -52,11 +52,9 @@ resource "aws_api_gateway_rest_api" "api" {
           }
         }
       }
-    }
 
-    paths = {
       "/create" = {
-        get = {
+        post = {
           x-amazon-apigateway-integration = {
             httpMethod           = "POST" # LambdaへのアクセスはPOSTでないといけないらしい
             payloadFormatVersion = "1.0"

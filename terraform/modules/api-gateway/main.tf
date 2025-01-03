@@ -41,7 +41,21 @@ resource "aws_api_gateway_rest_api" "api" {
       version = "1.0"
     }
     paths = {
-      "/sample" = {
+      "/import" = {
+        get = {
+          x-amazon-apigateway-integration = {
+            httpMethod           = "POST" # LambdaへのアクセスはPOSTでないといけないらしい
+            payloadFormatVersion = "1.0"
+            type                 = "AWS_PROXY"
+            uri                  = var.lambda_invoke_arn
+            credentials          = aws_iam_role.api_gateway_role.arn
+          }
+        }
+      }
+    }
+
+    paths = {
+      "/create" = {
         get = {
           x-amazon-apigateway-integration = {
             httpMethod           = "POST" # LambdaへのアクセスはPOSTでないといけないらしい

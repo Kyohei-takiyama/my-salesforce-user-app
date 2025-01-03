@@ -28,11 +28,6 @@ export async function createSalesforceUsers(
   const { SF_USERNAME, SF_PASSWORD, SF_SECURITY_TOKEN, SF_LOGIN_URL } =
     await getSalesforceSecrets("dev-create-sf-app-seacret");
 
-  console.log("SF_USERNAME: ", SF_USERNAME);
-  console.log("SF_PASSWORD: ", SF_PASSWORD);
-  console.log("SF_SECURITY_TOKEN: ", SF_SECURITY_TOKEN);
-  console.log("SF_LOGIN_URL: ", SF_LOGIN_URL);
-
   // Salesforce ログイン
   const conn = new jsforce.Connection({ loginUrl: SF_LOGIN_URL });
   await conn.login(SF_USERNAME, `${SF_PASSWORD}${SF_SECURITY_TOKEN}`);
@@ -43,27 +38,21 @@ export async function createSalesforceUsers(
   for (const user of userRecords) {
     try {
       // 参考: https://jsforce.github.io/document/#create
-      // 一旦疎通確認のため、取引先を作る
-      const res = await conn.sobject("Account").create({
-        Name: user.LastName,
+      const res = await conn.sobject("User").create({
+        FirstName: user.FirstName,
+        LastName: user.LastName,
+        Email: user.Email,
+        // ユーザー名やエイリアス, profileId などユーザー作成に必須のフィールドを適切に設定
+        Username: user.Email, // 一例としてEmailをUsernameに設定
+        Alias: user.Alias || user.LastName,
+        TimeZoneSidKey: user.TimeZoneSidKey || "Asia/Tokyo",
+        LocaleSidKey: user.LocaleSidKey || "ja",
+        EmailEncodingKey: user.EmailEncodingKey || "ISO-2022-JP",
+        LanguageLocaleKey: user.LanguageLocaleKey || "ja",
+        ProfileId: user.ProfileId,
+        UserRoleId: user.UserRoleId,
       });
-      console.log("Account created: ", JSON.stringify(res));
       results.push(res);
-      // const res = await conn.sobject("User").create({
-      //   FirstName: user.FirstName,
-      //   LastName: user.LastName,
-      //   Email: user.Email,
-      //   // ユーザー名やエイリアス, profileId などユーザー作成に必須のフィールドを適切に設定
-      //   Username: user.Email, // 一例としてEmailをUsernameに設定
-      //   Alias: user.Alias || user.LastName,
-      //   TimeZoneSidKey: user.TimeZoneSidKey || "Asia/Tokyo",
-      //   LocaleSidKey: user.LocaleSidKey || "ja",
-      //   EmailEncodingKey: user.EmailEncodingKey || "ISO-2022-JP",
-      //   LanguageLocaleKey: user.LanguageLocaleKey || "ja",
-      //   ProfileId: user.ProfileId,
-      //   UserRoleId: user.UserRoleId,
-      // });
-      // results.push(res);
     } catch (e) {
       console.error("Salesforce create user error: ", e);
       results.push({ success: false, error: e });

@@ -21,6 +21,10 @@ export const handler = async (
   };
 
   try {
+    const csvData = `Name,Email
+    Taro,taro@example.com
+    Hanako,hanako@example.com`;
+    const csvBase64 = Buffer.from(csvData).toString("base64");
     // OPTIONSメソッドへの対応
     if (event.httpMethod === "OPTIONS") {
       return {
@@ -46,7 +50,7 @@ export const handler = async (
     // Body のパラメータなどを取り出す (CSVデータ想定)
     // フロントから Base64 エンコード済みCSVデータを受け取る想定例
     const body = event.body ? JSON.parse(event.body) : {};
-    const csvBase64 = body.csvBase64;
+    // const csvBase64 = body.csvBase64;
     if (!csvBase64) {
       return {
         statusCode: 400,

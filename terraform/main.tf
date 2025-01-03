@@ -1,3 +1,6 @@
+# account id を取得
+data "aws_caller_identity" "current" {}
+
 # lambda
 module "lambda" {
   source       = "./modules/lambda"
@@ -36,5 +39,9 @@ module "oicd-iam-role" {
   github_oidc_endpoint = var.github_oidc_endpoint
 }
 
-# account id を取得
-data "aws_caller_identity" "current" {}
+module "seacret-manager" {
+  source       = "./modules/seacret-manager"
+  service_name = var.service_name
+  env_prefix   = var.env_prefix
+  my_secrets   = var.my_secrets
+}

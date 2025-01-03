@@ -23,6 +23,28 @@ data "aws_iam_policy_document" "lambda_assume_role" {
   }
 }
 
+# lambdaにアタッチするカスタムポリシー
+data "aws_iam_policy_document" "lambda_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetSecretValue",
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "lambda_policy" {
+  name        = "${var.service_name}-lambda-policy"
+  description = "Policy for lambda"
+  policy      = data.aws_iam_policy_document.lambda_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_custom_policy" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = aws_iam_policy.lambda_policy.arn
+}
+
 data "aws_ecr_image" "image" {
   repository_name = aws_ecr_repository.ecr.name
   most_recent     = true

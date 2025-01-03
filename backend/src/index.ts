@@ -80,7 +80,7 @@ async function createHandler(
     // 2. Salesforceユーザー作成
     //    createSalesforceUsers の引数は
     //    [{ Name: 'Taro', Email: 'taro@example.com' }, ...] のような配列を想定
-    // const result = await createSalesforceUsers(users);
+    const result = await createSalesforceUsers(users);
 
     // 3. 作成結果を返す
     return {

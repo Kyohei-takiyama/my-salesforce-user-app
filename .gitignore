@@ -1,2 +1,4 @@
 # リポジトリ共通 .gitignore
 node_modules
+
+.env

@@ -29,7 +29,7 @@ export default function DataTable({ data }: DataTableProps) {
             {headerGroup.headers.map((header) => (
               <th
                 key={header.id}
-                className="border border-gray-300 p-2 bg-gray-100"
+                className="border border-gray-300 p-2 bg-sky-500/75"
               >
                 {flexRender(
                   header.column.columnDef.header,

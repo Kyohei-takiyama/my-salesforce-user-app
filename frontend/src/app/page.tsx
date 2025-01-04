@@ -12,10 +12,36 @@ export default function Home() {
     setImportedData(data);
   };
 
+  // Salesforceユーザー作成ボタン押下時に呼ばれる
   const handleCreateUsers = async () => {
-    // ここでSalesforceユーザー作成のロジックを実装します
-    console.log("ユーザー作成を実行:", importedData);
-    // 実際のAPIコールなどを行う場合は、ここに実装します
+    try {
+      console.log("ユーザー作成を実行:", importedData);
+
+      // API Gateway経由でLambda(/create)を呼び出し
+      const response = await fetch(
+        "https://7kry00mylg.execute-api.us-west-2.amazonaws.com/dev/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // { users: [...] } の形式でバックエンドに送る
+          body: JSON.stringify({
+            users: importedData,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        console.error("Salesforce creation error:", data);
+        return;
+      }
+      console.log("Salesforce creation success:", data);
+      alert("Salesforceユーザーの作成が完了しました");
+    } catch (error) {
+      console.error("Error creating users:", error);
+    }
   };
 
   return (

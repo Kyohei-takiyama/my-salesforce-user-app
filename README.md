@@ -1,6 +1,23 @@
+## 構成
+
+![alt text](image.png)
+
 ## How to Development
 
+### backend
+
+- [参考](https://dev.to/ichintansoni/nodejs-typescript-getting-started-35j7)
+
+```sh
+# install typescript
+npm install -D typescript
+
+# create tsconfig.json
+npx tsc --init
+```
+
 ### Add new path in API Gate way
+
 ```sh
 resource "aws_api_gateway_rest_api" "api" {
     ...

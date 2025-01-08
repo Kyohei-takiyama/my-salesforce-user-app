@@ -53,6 +53,7 @@ export async function createSalesforceUsers(
         UserRoleId: user.UserRoleId,
       });
       results.push(res);
+      console.log("Salesforce create user success: ", JSON.stringify(res));
     } catch (e) {
       console.error("Salesforce create user error: ", e);
       results.push({ success: false, error: e });

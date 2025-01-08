@@ -44,7 +44,7 @@ export async function createSalesforceUsers(
         LastName: user.LastName,
         Email: user.Email,
         // ユーザー名やエイリアス, profileId などユーザー作成に必須のフィールドを適切に設定
-        Username: user.Email, // 一例としてEmailをUsernameに設定
+        Username: user.Username, // 一例としてEmailをUsernameに設定
         Alias: user.Alias || user.LastName,
         TimeZoneSidKey: user.TimeZoneSidKey || "Asia/Tokyo",
         LocaleSidKey: user.LocaleSidKey || "ja",

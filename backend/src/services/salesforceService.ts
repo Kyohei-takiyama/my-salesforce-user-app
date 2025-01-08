@@ -35,6 +35,7 @@ export async function createSalesforceUsers(
   // 例: まとめて User オブジェクトを insert
   // カスタムオブジェクトの場合は sobject('CustomObject__c') などを使う
   const results = [];
+  console.log("Salesforce create user success: ", JSON.stringify(userRecords));
   for (const user of userRecords) {
     try {
       // 参考: https://jsforce.github.io/document/#create
@@ -53,7 +54,6 @@ export async function createSalesforceUsers(
         UserRoleId: user.UserRoleId,
       });
       results.push(res);
-      console.log("Salesforce create user success: ", JSON.stringify(res));
     } catch (e) {
       console.error("Salesforce create user error: ", e);
       results.push({ success: false, error: e });

@@ -81,6 +81,17 @@ async function createHandler(
     //    [{ Name: 'Taro', Email: 'taro@example.com' }, ...] のような配列を想定
     const result = await createSalesforceUsers(users);
 
+    if (result.filter((r: any) => r.success === false).length > 0) {
+      return {
+        statusCode: 400,
+        headers: defaultHeaders,
+        body: JSON.stringify({
+          error: "Salesforce creation error",
+          detail: result,
+        }),
+      };
+    }
+
     // 3. 作成結果を返す
     return {
       statusCode: 200,

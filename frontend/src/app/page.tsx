@@ -41,6 +41,7 @@ export default function Home() {
       alert("Salesforceユーザーの作成が完了しました");
     } catch (error) {
       console.error("Error creating users:", error);
+      alert("Salesforceユーザーの作成に失敗しました");
     }
   };
 

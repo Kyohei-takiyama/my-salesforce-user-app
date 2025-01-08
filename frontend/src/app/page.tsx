@@ -50,6 +50,7 @@ export default function Home() {
       <h1 className="text-2xl font-bold mb-4">
         Salesforceユーザー一括作成アプリ
       </h1>
+      <p className="mb-4">インポートされたデータ件数: {importedData.length}</p>
       <CSVImporter onDataImported={handleDataImported} />
       {importedData.length > 0 && (
         <>
